@@ -7,7 +7,7 @@ id: BirthReminde
 name: BirthReminde
 description: 插件描述
 entranceAssembly: "BirthReminde.dll"
-url: https://example.com
-version: 0.0.0.0
+url: https://github.com/TBHLLL/BirthReminde
+version: 0.1.0.0
 apiVersion: 2.0.0.0
-author: 无名氏
+author: TBHLLL

@@ -1,0 +1,62 @@
+﻿<ci:SettingsPageBase x:Class="BirthReminde.Views.SettingsPage"
+      xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BirthReminde.Views"
+      xmlns:ci="http://classisland.tech/schemas/xaml/core"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{StaticResource HarmonyOsSans}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="14"
+
+      d:DataContext="{d:DesignInstance local:SettingsPage}">
+    <ci:DrawerHost x:Name="DrawerHost"
+                   DrawerPlacement="Right"
+                   IsDrawerOpen="{Binding IsDrawerOpen, Mode=TwoWay}">
+        <ci:DrawerHost.DrawerContent>
+            <StackPanel Margin="12">
+                <TextBlock Text="生日名单管理"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0 0 0 12"/>
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 8">
+                    <TextBox x:Name="NameTextBox"
+                             Watermark="姓名"
+                             Width="150"
+                             Margin="0 0 8 0"/>
+                    <DatePicker x:Name="DatePicker"
+                                Width="150"
+                                Margin="0 0 8 0"/>
+                    <Button Content="添加"
+                            Click="AddBirthday_Click"
+                            Width="80"/>
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Plugin.Settings.Birthdays}"
+                         Height="200">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}"
+                                           Width="120"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Date, StringFormat='yyyy-MM-dd'}"
+                                           Width="120"
+                                           VerticalAlignment="Center"/>
+                                <Button Content="删除"
+                                        Click="RemoveBirthday_Click"
+                                        Width="60"
+                                        Margin="8 0 0 0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </ci:DrawerHost.DrawerContent>
+        
+    </ci:DrawerHost>
+</ci:SettingsPageBase>
