@@ -8,7 +8,7 @@ using ClassIsland.Core.Enums.SettingsWindow;
 
 namespace BirthReminde.Views;
 
-[SettingsPageInfo("plug.plugSettingsPage","生日设置页面",SettingsPageCategory.External)]
+[SettingsPageInfo("plug.plugSettingsPage","生日设置页面","\ue4c4", "\ue4c3",SettingsPageCategory.External)]
 public partial class SettingsPage : SettingsPageBase
 {
     public SettingsPage()
@@ -21,6 +21,15 @@ public partial class SettingsPage : SettingsPageBase
         
     }
     private void RemoveBirthday_Click(object? sender, RoutedEventArgs e)
+    {
+        
+    }
+
+    private void ButtonSyncTimeNow_OnClick(object? sender, RoutedEventArgs e)
+    {
+        
+    }
+    private void ButtonAdjustTime_OnClick(object? sender, RoutedEventArgs e)
     {
         
     }
