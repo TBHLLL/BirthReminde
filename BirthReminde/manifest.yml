@@ -1,11 +1,11 @@
-# nonk8s
+﻿# nonk8s
 # 插件清单文件使用 YAML 格式存储。
 # YAML 教程：https://www.runoob.com/w3cnote/yaml-intro.html
 # 插件清单格式：https://docs.classisland.tech/zh-cn/latest/dev/plugins/create-project/#%E6%8F%92%E4%BB%B6%E6%B8%85%E5%8D%95%E6%96%87%E4%BB%B6
 
 id: BirthReminde
-name: BirthReminde
-description: 插件描述
+name: 生日提醒
+description: 显示当天或即将到来的生日提醒，支持添加、删除生日信息，自定义显示样式
 entranceAssembly: "BirthReminde.dll"
 url: https://github.com/TBHLLL/BirthReminde
 version: 0.1.0.0

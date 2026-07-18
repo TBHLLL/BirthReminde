@@ -1,4 +1,4 @@
-﻿<ci:ComponentBase  x:Class="BirthReminde.Views.birthreminder"
+<ci:ComponentBase x:Class="BirthReminde.Views.birthreminder"
                          xmlns="https://github.com/avaloniaui"
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,61 +6,19 @@
                          xmlns:ci="http://classisland.tech/schemas/xaml/core"
                          mc:Ignorable="d" 
                          d:DesignHeight="40" d:DesignWidth="200">
-    <!-- <StackPanel Orientation="Horizontal" -->
-    <!--             VerticalAlignment="Center" -->
-    <!--             HorizontalAlignment="Center"> -->
-    <!--     ~1~ <TextBlock x:Name="IconText" @1@ -->
-    <!--     ~1~            FontFamily="Segoe UI Symbol" @1@ -->
-    <!--     ~1~            FontSize="18" @1@ -->
-    <!--     ~1~            VerticalAlignment="Center" @1@ -->
-    <!--     ~1~            Margin="0 0 6 0" @1@ -->
-    <!--     ~1~            Text="&#xE837;"/> @1@ -->
-    <!--     <TextBlock x:Name="BirthdaysText" -->
-    <!--                FontSize="14" -->
-    <!--                FontWeight="SemiBold" -->
-    <!--                VerticalAlignment="Center" -->
-    <!--                Text="测试" -->
-    <!--                /> -->
-    <!--      -->
-    <!-- </StackPanel> -->
     <ci:ComponentBase.Styles>
-                
     </ci:ComponentBase.Styles>
     <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ci:ComponentBase}}}"
           VerticalAlignment="Stretch" TextElement.FontSize="{DynamicResource MainWindowBodyFontSize}">
-        <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
-            <!-- <Panel VerticalAlignment="Center" Margin="0 0  4 0"> -->
-            <!--     <Ellipse Width="21.4" Height="21.4" Stroke="{DynamicResource ControlStrongStrokeColorDisabledBrush}"  -->
-            <!--              StrokeThickness="2.6" VerticalAlignment="Center" HorizontalAlignment="Center"/> -->
-            <!--     <Path Width="22" Height="22"  -->
-            <!--           x:Name="ProgressAccent" -->
-            <!--           VerticalAlignment="Center" HorizontalAlignment="Center" -->
-            <!--           StrokeLineCap="Round"  -->
-            <!--           StrokeThickness="3.1"> -->
-            <!--         ~1~ <Path.Data> @1@ -->
-            <!--         ~1~     <Binding Path="Percent" @1@ -->
-            <!--         ~1~              Converter="{x:Static local:CountDownComponent.PercentToPathGeometryConverter}" /> @1@ -->
-            <!--         ~1~ </Path.Data> @1@ -->
-            <!--     </Path> -->
-            <!-- </Panel> -->
-            <TextBlock Text="距离"
-                       x:Name="TextBlockTo"
-                       Classes="connector l-instructive"
-                       IsVisible="{Binding !Settings.IsCompactModeEnabled}"
-                       VerticalAlignment="Center" />
-            <TextBlock Text="2"
-                       Foreground="{Binding Settings.FontColor,Converter={StaticResource ColorToColorPickerBrushConverter}}"
-                       FontSize="{Binding Settings.FontSize}"
-                       VerticalAlignment="Center" />
-            <TextBlock Text="3"
-                       VerticalAlignment="Center"
-                       Classes="connector l-instructive"
-                       x:Name="TextBlockConnector"
-                       IsVisible="{Binding !Settings.IsCompactModeEnabled}"/>
-            <TextBlock Text="4" 
-                       Foreground="{Binding Settings.FontColor,Converter={StaticResource ColorToColorPickerBrushConverter}}"
-                       FontSize="{Binding Settings.FontSize}"
-                       VerticalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+            <Panel VerticalAlignment="Center" Margin="0 0 4 0"
+                   x:Name="CircleProgressRoot">
+                <TextBlock x:Name="DisplayTextBlock"
+                           Text=" 今日无生日 "
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           TextWrapping="NoWrap" />
+            </Panel>
         </StackPanel>
     </Grid>
 </ci:ComponentBase>

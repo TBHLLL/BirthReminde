@@ -1,4 +1,4 @@
-﻿<ci:SettingsPageBase x:Class="BirthReminde.Views.SettingsPage"
+<ci:SettingsPageBase x:Class="BirthReminde.Views.SettingsPage"
       xmlns="https://github.com/avaloniaui"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -14,130 +14,80 @@
       FontFamily="{StaticResource HarmonyOsSans}"
       TextElement.FontWeight="Regular"
       TextElement.FontSize="14"
-
       d:DataContext="{d:DesignInstance local:SettingsPage}">
-    <!-- <ci:DrawerHost x:Name="DrawerHost" -->
-    <!--                DrawerPlacement="Right" -->
-    <!--                IsDrawerOpen="{Binding IsDrawerOpen, Mode=TwoWay}"> -->
-    <!--     <ci:DrawerHost.DrawerContent> -->
-    <!--         <StackPanel Margin="12"> -->
-    <!--             <TextBlock Text="生日名单管理" -->
-    <!--                        FontSize="16" -->
-    <!--                        FontWeight="SemiBold" -->
-    <!--                        Margin="0 0 0 12"/> -->
-    <!--             <StackPanel Orientation="Horizontal" Margin="0 0 0 8"> -->
-    <!--                 <TextBox x:Name="NameTextBox" -->
-    <!--                          Watermark="姓名" -->
-    <!--                          Width="150" -->
-    <!--                          Margin="0 0 8 0"/> -->
-    <!--                 <DatePicker x:Name="DatePicker" -->
-    <!--                             Width="150" -->
-    <!--                             Margin="0 0 8 0"/> -->
-    <!--                 <Button Content="添加" -->
-    <!--                         Click="AddBirthday_Click" -->
-    <!--                         Width="80"/> -->
-    <!--             </StackPanel> -->
-    <!--             <ListBox ItemsSource="{Binding Plugin.Settings.Birthdays}" -->
-    <!--                      Height="200"> -->
-    <!--                 <ListBox.ItemTemplate> -->
-    <!--                     <DataTemplate> -->
-    <!--                         <StackPanel Orientation="Horizontal"> -->
-    <!--                             <TextBlock Text="{Binding Name}" -->
-    <!--                                        Width="120" -->
-    <!--                                        VerticalAlignment="Center"/> -->
-    <!--                             <TextBlock Text="{Binding Date, StringFormat='yyyy-MM-dd'}" -->
-    <!--                                        Width="120" -->
-    <!--                                        VerticalAlignment="Center"/> -->
-    <!--                             <Button Content="删除" -->
-    <!--                                     Click="RemoveBirthday_Click" -->
-    <!--                                     Width="60" -->
-    <!--                                     Margin="8 0 0 0"/> -->
-    <!--                         </StackPanel> -->
-    <!--                     </DataTemplate> -->
-    <!--                 </ListBox.ItemTemplate> -->
-    <!--             </ListBox> -->
-    <!--         </StackPanel> -->
-    <!--     </ci:DrawerHost.DrawerContent> -->
-    <!--      -->
-    <!-- </ci:DrawerHost> -->
     <ScrollViewer>
         <StackPanel Classes="settings-container animated-intro">
-            <!-- <StackPanel> -->
-            <!--     <TextBlock Text="生日提醒插件" -->
-            <!--                FontSize="36" FontWeight="Medium"/> -->
-            <!--     <TextBlock Text="本插件用于生日提醒。" -->
-            <!--                Classes="l-instructive"/> -->
-            <!-- </StackPanel> -->
-            <!-- <Separator Margin="0 12 0 4" /> -->
-            <ci:IconText Glyph="&#xE4C4;" Text="生日" Margin="0 0 0 4" />
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE4C8;}" 
-                                        Header="使用精确时间"
-                                        Description="启用后，应用将使用从指定服务器同步的精确时间，而不是使用系统时间。"
-                                        IsExpanded="True">
-                <controls:SettingsExpander.Footer>
-                    <ToggleSwitch IsChecked="True"/>
-                </controls:SettingsExpander.Footer>
-                <controls:SettingsExpanderItem Content="时间服务器">
-                    <controls:SettingsExpanderItem.Footer>
-                        <TextBox VerticalAlignment="Stretch"
-                              Text="1"
-                              HorizontalContentAlignment="Left"
-                              
-                              Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-                        </TextBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem.Footer>
-                        <Button Margin="0 6 0 0" 
-                                Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
-                                HorizontalAlignment="Left"
-                                Click="ButtonSyncTimeNow_OnClick">
-                            <ci:IconText Glyph="&#xE0B5;" Text="立即同步"/>
-                        </Button>
-                    </controls:SettingsExpanderItem.Footer>
-                    <TextBlock Margin="0 6 0 0" Text="{Binding ViewModel.ExactTimeService.SyncStatusMessage}"
-                               TextWrapping="Wrap"/>
-                </controls:SettingsExpanderItem>
+            <ci:IconText Glyph="&#xE4C4;" Text="常规设置" Margin="0 0 0 4" />
+            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE4C4;}" 
+                                       Header="生日管理"
+                                       Description="添加、编辑和删除生日信息"
+                                       IsExpanded="True">
+                <StackPanel Margin="0 8 0 0">
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 8" Spacing="8">
+                        <TextBox x:Name="NameTextBox"
+                                  Watermark="姓名"
+                                  Width="150"/>
+                        <DatePicker x:Name="DatePicker"
+                                    Width="150"/>
+                        <Button Content="添加"
+                                Click="AddBirthday_Click"
+                                Width="80"/>
+                    </StackPanel>
+                    <ListBox x:Name="BirthdaysListBox"
+                             ItemsSource="{Binding Settings.Birthdays}"
+                             Height="250">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
+                                    <TextBlock Text="{Binding Name}"
+                                               Width="120"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Date, StringFormat='yyyy-MM-dd'}"
+                                               Width="120"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Notes}"
+                                               Width="150"
+                                               VerticalAlignment="Center"
+                                               Classes="l-instructive"/>
+                                    <Button Content="删除"
+                                            Click="RemoveBirthday_Click"
+                                            Width="60"
+                                            Margin="8 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
             </controls:SettingsExpander>
             
-            <!-- 时间偏移 -->
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE4C4;}" 
-                                        Header="时间偏移"
-                                        Description="设定课程时间与实际时间的偏移值。增大偏移以抵消铃声提前，减小偏移以抵消铃声滞后。"
+            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE837;}" 
+                                        Header="显示设置"
+                                        Description="自定义生日提醒的显示样式"
                                         IsExpanded="True">
-                <controls:SettingsExpander.Footer>
-                    <ci:Field Suffix="秒">
+                <controls:SettingsExpanderItem Content="字体大小">
+                    <controls:SettingsExpanderItem.Footer>
                         <controls:NumberBox VerticalAlignment="Center"
                                              MinWidth="147"
                                              SpinButtonPlacementMode="Inline"
-                                             Value="{Binding ViewModel.SettingsService.Settings.TimeOffsetSeconds, Converter={x:Static ci:NotNaNConverter.Instance}}" />
-                    </ci:Field>
-                </controls:SettingsExpander.Footer>
-                <controls:SettingsExpanderItem Content="自动时间偏移"
-                                                Description="若启用，每天自动以设定的增量值调整时间偏移量。"
-                                                IconSource="{ci:FluentIconSource &#xE4D2;}">
-
-                    <controls:SettingsExpanderItem.Footer>
-                        <DockPanel>
-                            <ToggleSwitch DockPanel.Dock="Right"
-                                          Margin="8 -8 0 0"
-                                          VerticalAlignment="Center"
-                                          IsChecked="{Binding ViewModel.SettingsService.Settings.IsTimeAutoAdjustEnabled}"/>
-                            <ci:Field Suffix="秒" VerticalAlignment="Center">
-                                <controls:NumberBox
-                                    MinWidth="147"
-                                    SpinButtonPlacementMode="Inline"
-                                    IsEnabled="{Binding ViewModel.SettingsService.Settings.IsTimeAutoAdjustEnabled}"
-                                    Value="{Binding ViewModel.SettingsService.Settings.TimeAutoAdjustSeconds, Converter={x:Static ci:NotNaNConverter.Instance}}"/>
-                            </ci:Field>
-                        </DockPanel>
+                                             Value="{Binding Settings.FontSize}"/>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="对齐铃声"
-                                                IsClickEnabled="True"
-                                                Click="ButtonAdjustTime_OnClick"/>
+                <controls:SettingsExpanderItem Content="字体颜色">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ci:Field>
+                            
+                        </ci:Field>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="紧凑模式">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch IsChecked="{Binding Settings.IsCompactModeEnabled}"/>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
+            
+            <Separator Margin="0 12 0 4" />
+            <ci:IconText Glyph="&#xE4C4;" Text="文件设置" Margin="0 0 0 4" />
         </StackPanel>
     </ScrollViewer>
 </ci:SettingsPageBase>
