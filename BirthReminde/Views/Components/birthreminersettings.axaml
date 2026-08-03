@@ -4,20 +4,69 @@
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:ci="http://classisland.tech/schemas/xaml/core"
                   xmlns:models="clr-namespace:BirthReminde.Models"
+                  xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                   x:DataType="models:BirthRemindeComponentSettings">
-    <StackPanel Spacing="8" Margin="4">
-        <ToggleSwitch Content="显示生日者姓名"
-                      IsChecked="{Binding ShowNames}" />
-        <StackPanel Orientation="Horizontal" Spacing="8">
-            <TextBlock Text="最多显示姓名数" VerticalAlignment="Center" />
-            <NumericUpDown Minimum="1"
-                           Maximum="20"
-                           Increment="1"
-                           Width="120"
-                           Value="{Binding MaxNameCount}" />
+    <ScrollViewer>
+        <StackPanel Spacing="8" Margin="4">
+            <!-- <ToggleSwitch Content="显示生日者姓名" -->
+            <!--               IsChecked="{Binding ShowNames}" /> -->
+            <!-- <StackPanel Orientation="Horizontal" Spacing="8"> -->
+            <!--     <TextBlock Text="最多显示姓名数" VerticalAlignment="Center" /> -->
+            <!--     <NumericUpDown Minimum="1" -->
+            <!--                    Maximum="20" -->
+            <!--                    Increment="1" -->
+            <!--                    Width="120" -->
+            <!--                    Value="{Binding MaxNameCount}" /> -->
+            <!-- </StackPanel> -->
+            <TextBlock Text="超过该数量时只显示“今日生日：N 人”。"
+                       Opacity="0.7"
+                       TextWrapping="Wrap" />
+            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE837;}" 
+                                            Header="显示设置"
+                                            Description="自定义生日提醒的显示样式"
+                                            IsExpanded="True">
+                    <controls:SettingsExpanderItem Content="字体大小">
+                        <controls:SettingsExpanderItem.Footer>
+                            <controls:NumberBox VerticalAlignment="Center"
+                                                 MinWidth="147"
+                                                 SpinButtonPlacementMode="Inline"
+                                                 Value="{Binding FontSize}"/>
+                        </controls:SettingsExpanderItem.Footer>
+                    </controls:SettingsExpanderItem>
+                    <controls:SettingsExpanderItem Content="字体颜色">
+                        <controls:SettingsExpanderItem.Footer>
+                            <ci:Field>
+                                <!-- <ci:ColorPicker SelectedColor="{Binding FontColor}" /> -->
+                            </ci:Field>
+                        </controls:SettingsExpanderItem.Footer>
+                    </controls:SettingsExpanderItem>
+                    <controls:SettingsExpanderItem Content="紧凑模式">
+                        <controls:SettingsExpanderItem.Footer>
+                            <ToggleSwitch IsChecked="{Binding IsCompactModeEnabled}"/>
+                        </controls:SettingsExpanderItem.Footer>
+                    </controls:SettingsExpanderItem>
+                    <controls:SettingsExpanderItem Content="循环切换">
+                        <controls:SettingsExpanderItem.Footer>
+                            <ToggleSwitch IsChecked="{Binding IsCycleEnabled}"/>
+                        </controls:SettingsExpanderItem.Footer>
+                    </controls:SettingsExpanderItem>
+                    <controls:SettingsExpanderItem Content="切换间隔(秒)">
+                        <controls:SettingsExpanderItem.Footer>
+                            <controls:NumberBox VerticalAlignment="Center"
+                                                 MinWidth="147"
+                                                 Minimum="1"
+                                                 Maximum="60"
+                                                 SpinButtonPlacementMode="Inline"
+                                                 Value="{Binding CycleIntervalSeconds}"/>
+                        </controls:SettingsExpanderItem.Footer>
+                    </controls:SettingsExpanderItem>
+                    <controls:SettingsExpanderItem Content="过渡动画">
+                        <controls:SettingsExpanderItem.Footer>
+                            <ToggleSwitch IsChecked="{Binding IsAnimationEnabled}"/>
+                        </controls:SettingsExpanderItem.Footer>
+                    </controls:SettingsExpanderItem>
+                </controls:SettingsExpander>
         </StackPanel>
-        <TextBlock Text="超过该数量时只显示“今日生日：N 人”。"
-                   Opacity="0.7"
-                   TextWrapping="Wrap" />
-    </StackPanel>
+    </ScrollViewer>
+    
 </ci:ComponentBase>

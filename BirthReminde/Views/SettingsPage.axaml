@@ -58,7 +58,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
-            </controls:SettingsExpander>
+            </controls:SettingsExpander> <!-- 设置页面的常规设置 -->
             
             <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE837;}" 
                                         Header="显示设置"
@@ -84,10 +84,52 @@
                         <ToggleSwitch IsChecked="{Binding Settings.IsCompactModeEnabled}"/>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="循环切换">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch IsChecked="{Binding Settings.IsCycleEnabled}"/>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="切换间隔(秒)">
+                    <controls:SettingsExpanderItem.Footer>
+                        <controls:NumberBox VerticalAlignment="Center"
+                                             MinWidth="147"
+                                             Minimum="1"
+                                             Maximum="60"
+                                             SpinButtonPlacementMode="Inline"
+                                             Value="{Binding Settings.CycleIntervalSeconds}"/>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="过渡动画">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch IsChecked="{Binding Settings.IsAnimationEnabled}"/>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
             
             <Separator Margin="0 12 0 4" />
             <ci:IconText Glyph="&#xE4C4;" Text="文件设置" Margin="0 0 0 4" />
+            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE8A5;}" 
+                                       Header="CSV导入"
+                                       Description="从CSV文件批量导入生日信息（格式：姓名,日期,备注）"
+                                       IsExpanded="False">
+                <StackPanel Margin="0 8 0 0" Spacing="8">
+                    <TextBlock Text="CSV文件格式：姓名,日期(yyyy-MM-dd),备注（可选）"
+                               Opacity="0.7"
+                               TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBox x:Name="CsvFilePathTextBox"
+                                 Watermark="CSV文件路径"
+                                 Width="350"
+                                 IsReadOnly="True" />
+                        <Button Content="选择文件"
+                                Click="SelectCsvFile_Click"
+                                Width="80" />
+                        <Button Content="导入"
+                                Click="ImportCsv_Click"
+                                Width="80" />
+                    </StackPanel>
+                </StackPanel>
+            </controls:SettingsExpander>
         </StackPanel>
     </ScrollViewer>
 </ci:SettingsPageBase>
