@@ -6,6 +6,9 @@
 >\[!caution]
 > 此插件使用了AI辅助，即便我尽量看了大部分代码，但是一些安全方面、代码规范都会有一些问题
 > 由于是我第一次写C#项目，对C#语言特性不是很熟悉，代码质量会比较差（反正写的很烂就是了）
+
+>\[!tip]
+> 这个介绍也是AI生成我改的（
 - 项目地址：[TBHLLL/BirthReminde](https://github.com/TBHLLL/BirthReminde)
 - 当前版本：1.0.0.0（见插件清单 `manifest.yml`）
 - 技术栈：C# / .NET 8（`net8.0-windows`）、Avalonia 11、FluentAvalonia、CommunityToolkit.Mvvm、ClassIsland 插件 SDK
@@ -72,7 +75,7 @@ BirthReminde/
 
 ## 使用方法
 
-1. 通过Classland导入插件.cipx文件；
+1. 通过Classisland导入插件.cipx文件；
 2. 在主界面编辑模式中添加「生日提醒」组件；
 3. 打开插件设置页，添加生日信息（姓名 + 日期），或通过 CSV 批量导入；
 4. 组件会自动显示最近的生日提醒，当天生日会显示年龄信息。
@@ -95,7 +98,7 @@ CSV 格式为 `姓名,日期,备注(可选)`，例如：
 环境要求：
 
 - Windows
-- .NET 8 SDK
+- .NET 9 SDK
 - ClassIsland 2.0.0 及以上（插件 SDK：`ClassIsland.PluginSdk` 1.7.106.2-dev-v2）
 
 构建：
@@ -105,6 +108,9 @@ dotnet restore
 dotnet build
 ```
 
+## 更新日志
+- v1.1.0.0 修复了在与节假日插件共用时的崩溃（早期写C#因为不会写看别人的代码把UUID一块复制下来了🙇🙇🙇），更新在特定规则下发起生日通知
+- v1.0.0.0 基本版本
 ## 许可证
 
 本项目基于 GNU Lesser General Public License v3.0 许可
