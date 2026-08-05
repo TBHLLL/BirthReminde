@@ -30,49 +30,71 @@
                         <DatePicker x:Name="DatePicker"
                                     MonthVisible="True"
                                     DayVisible="True"
-                                    YearVisible="False"
                                     Width="300"/>
                         <Button Content="添加"
                                 Click="AddBirthday_Click"
                                 Width="80"/>
                     </StackPanel>
-                    <ListBox x:Name="BirthdaysListBox"
-                             ItemsSource="{Binding Settings.Birthdays}"
-                             SelectionMode="Multiple"
-                             SelectionChanged="BirthdaysListBox_OnSelectionChanged"
-                             DoubleTapped="BirthdaysListBox_OnDoubleTapped"
-                             Height="250">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-                                    <TextBlock Text="{Binding Name}"
-                                               Width="120"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Date, StringFormat='yyyy-MM-dd'}"
-                                               Width="120"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Notes}"
-                                               Width="150"
-                                               VerticalAlignment="Center"
-                                               Classes="l-instructive"/>
-                                    <Button Content="编辑"
-                                            Click="EditBirthday_Click"
-                                            Width="60"
-                                            Margin="8 0 0 0"/>
-                                    <Button Content="删除"
-                                            Click="RemoveBirthday_Click"
-                                            Width="60"
-                                            Margin="8 0 0 0"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    <DataGrid x:Name="BirthdaysGrid"
+                              ItemsSource="{Binding BirthdayRows}"
+                              AutoGenerateColumns="False"
+                              CanUserReorderColumns="False"
+                              CanUserResizeColumns="True"
+                              CanUserSortColumns="True"
+                              SelectionMode="Single"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal"
+                              RowBackground="Transparent"
+                              Height="250"
+                              DoubleTapped="BirthdaysGrid_OnDoubleTapped"
+                              Background="{DynamicResource MaterialDesignPaper}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="全选" Width="40">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                  Click="RowCheckBox_Click"
+                                                  HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="姓名"
+                                                Binding="{Binding Item.Name}"
+                                                Width="120"/>
+                            <DataGridTextColumn Header="生日"
+                                                Binding="{Binding Item.Date, StringFormat='yyyy-MM-dd'}"
+                                                Width="120"/>
+                            <DataGridTextColumn Header="备注"
+                                                Binding="{Binding Item.Notes}"
+                                                Width="*"/>
+                            <DataGridTemplateColumn Header="操作" Width="140">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <Button Content="编辑"
+                                                    Click="EditBirthday_Click"
+                                                    Width="60"/>
+                                            <Button Content="删除"
+                                                    Click="RemoveBirthday_Click"
+                                                    Width="60"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                     <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Spacing="8">
+                        <CheckBox x:Name="SelectAllCheckBox"
+                                  Content="全选"
+                                  IsThreeState="True"
+                                  Click="SelectAllCheckBox_Click"
+                                  VerticalAlignment="Center"/>
                         <Button x:Name="DeleteSelectedButton"
                                 Content="删除选中"
                                 Click="RemoveSelected_Click"
                                 Width="100"/>
-                        <TextBlock Text="按住 Ctrl/Shift 可多选，双击行编辑" 
+                        <TextBlock Text="勾选行后可批量删除，双击行编辑" 
                                    Opacity="0.6"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
@@ -80,8 +102,8 @@
             </controls:SettingsExpander> <!-- 设置页面的常规设置 -->
 
             <Separator Margin="0 12 0 4" />
-            <ci:IconText Glyph="&#xE4C4;" Text="文件设置" Margin="0 0 0 4" />
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE8A5;}" 
+            <ci:IconText Glyph="&#xe064;" Text="文件设置" Margin="0 0 0 4" />
+            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xe881;}" 
                                        Header="CSV导入"
                                        Description="从CSV文件批量导入生日信息（格式：姓名,日期,备注）"
                                        IsExpanded="False">
@@ -105,8 +127,9 @@
             </controls:SettingsExpander>
             
             <Separator Margin="0 12 0 4" />
-            <ci:IconText Glyph="&#xE015;" Text="提醒设置" Margin="0 0 0 4" />
+            <ci:IconText Glyph="&#xe025;" Text="提醒设置" Margin="0 0 0 4" />
             <controls:SettingsExpander Header="提醒设置"
+                                       IconSource="{ci:FluentIconSource &#xe025;}"
                                        Description="配置生日提醒的相关选项"
                                        IsExpanded="False">
                 <controls:SettingsExpanderItem Content="生日提醒范围(天)">

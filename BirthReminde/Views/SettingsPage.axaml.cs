@@ -15,6 +15,8 @@ using FluentAvalonia.UI.Controls;
 using Avalonia.Media;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace BirthReminde.Views;
@@ -26,9 +28,79 @@ public partial class SettingsPage : SettingsPageBase
     {
         InitializeComponent();
         DataContext = this;
+        Loaded += OnPageLoaded;
+        Unloaded += OnPageUnloaded;
     }
 
     public BirthRemindeSettings Settings => IAppHost.GetService<BirthRemindeSettings>();
+
+    public ObservableCollection<BirthdayRowViewModel> BirthdayRows { get; } = new();
+
+    private void OnPageLoaded(object? sender, RoutedEventArgs e)
+    {
+        Settings.Birthdays.CollectionChanged += Birthdays_OnCollectionChanged;
+        RefreshBirthdayRows();
+    }
+
+    private void OnPageUnloaded(object? sender, RoutedEventArgs e)
+    {
+        Settings.Birthdays.CollectionChanged -= Birthdays_OnCollectionChanged;
+    }
+
+    private void RefreshBirthdayRows()
+    {
+        BirthdayRows.Clear();
+        foreach (var birthday in Settings.Birthdays)
+        {
+            BirthdayRows.Add(new BirthdayRowViewModel(birthday));
+        }
+        UpdateSelectionSummary();
+    }
+
+    private void Birthdays_OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        RefreshBirthdayRows();
+    }
+
+    private void UpdateSelectionSummary()
+    {
+        var checkedCount = BirthdayRows.Count(x => x.IsChecked);
+        DeleteSelectedButton.Content = checkedCount > 0 ? $"删除选中({checkedCount})" : "删除选中";
+
+        if (SelectAllCheckBox == null)
+            return;
+
+        if (BirthdayRows.Count == 0 || checkedCount == 0)
+        {
+            SelectAllCheckBox.IsChecked = false;
+        }
+        else if (checkedCount == BirthdayRows.Count)
+        {
+            SelectAllCheckBox.IsChecked = true;
+        }
+        else
+        {
+            SelectAllCheckBox.IsChecked = null;
+        }
+    }
+
+    private void RowCheckBox_Click(object? sender, RoutedEventArgs e)
+    {
+        UpdateSelectionSummary();
+    }
+
+    private void SelectAllCheckBox_Click(object? sender, RoutedEventArgs e)
+    {
+        // 以当前勾选情况决定动作，而不是依赖三态复选框的点击循环顺序：
+        // 全部已勾选 -> 取消全选；未选或部分选中 -> 全选
+        var allChecked = BirthdayRows.Count > 0 && BirthdayRows.All(x => x.IsChecked);
+        var check = !allChecked;
+        foreach (var row in BirthdayRows)
+        {
+            row.IsChecked = check;
+        }
+        UpdateSelectionSummary();
+    }
 
     private void AddBirthday_Click(object? sender, RoutedEventArgs e)
     {
@@ -50,24 +122,18 @@ public partial class SettingsPage : SettingsPageBase
 
     private void RemoveBirthday_Click(object? sender, RoutedEventArgs e)
     {
-        if (sender is Button button && button.DataContext is BirthdayInfo birthday)
+        if (sender is Button { DataContext: BirthdayRowViewModel row })
         {
-            Settings.Birthdays.Remove(birthday);
+            Settings.Birthdays.Remove(row.Item);
         }
-    }
-
-    private void BirthdaysListBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        var count = BirthdaysListBox.SelectedItems?.Count ?? 0;
-        DeleteSelectedButton.Content = count > 0 ? $"删除选中({count})" : "删除选中";
     }
 
     private void RemoveSelected_Click(object? sender, RoutedEventArgs e)
     {
-        var selected = BirthdaysListBox.SelectedItems?.Cast<BirthdayInfo>().ToList() ?? new List<BirthdayInfo>();
+        var selected = BirthdayRows.Where(x => x.IsChecked).Select(x => x.Item).ToList();
         if (selected.Count == 0)
         {
-            this.ShowWarningToast("请先选择要删除的生日");
+            this.ShowWarningToast("请先勾选要删除的生日");
             return;
         }
 
@@ -80,20 +146,20 @@ public partial class SettingsPage : SettingsPageBase
 
     private void EditBirthday_Click(object? sender, RoutedEventArgs e)
     {
-        if (sender is Button { DataContext: BirthdayInfo birthday })
+        if (sender is Button { DataContext: BirthdayRowViewModel row })
         {
-            _ = ShowEditDialog(birthday);
+            _ = ShowEditDialog(row.Item);
         }
     }
 
-    private void BirthdaysListBox_OnDoubleTapped(object? sender, TappedEventArgs e)
+    private void BirthdaysGrid_OnDoubleTapped(object? sender, TappedEventArgs e)
     {
         var source = e.Source as Control;
         while (source != null)
         {
-            if (source.DataContext is BirthdayInfo birthday)
+            if (source.DataContext is BirthdayRowViewModel row)
             {
-                _ = ShowEditDialog(birthday);
+                _ = ShowEditDialog(row.Item);
                 return;
             }
             source = source.Parent as Control;
