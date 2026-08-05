@@ -1,21 +1,15 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
 using BirthReminde.Models;
 using BirthReminde.Settings;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Shared;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
-using System.Threading.Tasks;
-using Avalonia.Threading;
+using Timer = System.Timers.Timer;
 
-namespace BirthReminde.Views;
+namespace BirthReminde.Views.Components;
 
 [ComponentInfo(
     "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
@@ -25,16 +19,15 @@ namespace BirthReminde.Views;
 )]
 public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings>
 {
-    public BirthRemindeSettings GlobalSettings => IAppHost.GetService<BirthRemindeSettings>();
-
-    private DateTime _lastCycleTime;
-    private DateTime _lastRefreshTime;
-    private System.Timers.Timer? _timer;
-    private List<(BirthdayInfo Info, int DaysUntil)> _upcomingBirthdays = new();
+    private readonly HashSet<BirthdayInfo> _subscribedBirthdays = new();
     private int _cycleIndex;
     private bool _isAnimating;
+
+    private DateTime _lastCycleTime;
     private string _lastDisplayKey = "";
-    private readonly HashSet<BirthdayInfo> _subscribedBirthdays = new();
+    private DateTime _lastRefreshTime;
+    private Timer? _timer;
+    private List<(BirthdayInfo Info, int DaysUntil)> _upcomingBirthdays = new();
 
     public birthreminder()
     {
@@ -43,7 +36,9 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
         Unloaded += OnControlUnloaded;
     }
 
-    private void OnControlLoaded(object? sender, global::Avalonia.Interactivity.RoutedEventArgs e)
+    public BirthRemindeSettings GlobalSettings => IAppHost.GetService<BirthRemindeSettings>();
+
+    private void OnControlLoaded(object? sender, RoutedEventArgs e)
     {
         GlobalSettings.Birthdays.CollectionChanged += OnBirthdaysChanged;
         GlobalSettings.PropertyChanged += OnGlobalSettingsPropertyChanged;
@@ -68,10 +63,7 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
 
     private void ResyncBirthdaySubscriptions()
     {
-        foreach (var birthday in _subscribedBirthdays)
-        {
-            birthday.PropertyChanged -= OnBirthdayPropertyChanged;
-        }
+        foreach (var birthday in _subscribedBirthdays) birthday.PropertyChanged -= OnBirthdayPropertyChanged;
         _subscribedBirthdays.Clear();
 
         foreach (var birthday in GlobalSettings.Birthdays)
@@ -94,13 +86,11 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
     {
         // 提醒范围变更时刷新列表与显示
         if (e.PropertyName == nameof(GlobalSettings.RemideRange))
-        {
             Dispatcher.UIThread.InvokeAsync(() =>
             {
                 RefreshUpcomingList();
                 UpdateDisplay();
             });
-        }
     }
 
     private void OnSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -110,11 +100,8 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
 
     private void StartTimer()
     {
-        _timer = new System.Timers.Timer(100);
-        _timer.Elapsed += (_, _) =>
-        {
-            Dispatcher.UIThread.InvokeAsync(OnTick);
-        };
+        _timer = new Timer(100);
+        _timer.Elapsed += (_, _) => { Dispatcher.UIThread.InvokeAsync(OnTick); };
         _timer.Start();
     }
 
@@ -154,10 +141,7 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
         foreach (var b in birthdays)
         {
             var daysUntil = b.GetDaysUntilBirthday();
-            if (daysUntil <= range)
-            {
-                _upcomingBirthdays.Add((b, daysUntil));
-            }
+            if (daysUntil <= range) _upcomingBirthdays.Add((b, daysUntil));
         }
 
         _upcomingBirthdays = _upcomingBirthdays.OrderBy(x => x.DaysUntil).ToList();
@@ -167,7 +151,7 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
     }
 
     /// <summary>
-    /// 生成当前显示状态的唯一标识，用于检测内容是否变化
+    ///     生成当前显示状态的唯一标识，用于检测内容是否变化
     /// </summary>
     private string GetDisplayKey()
     {
@@ -179,7 +163,7 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
     }
 
     /// <summary>
-    /// 将姓名、提醒文本、年龄写入组件设置，由 XAML 绑定自动更新 UI
+    ///     将姓名、提醒文本、年龄写入组件设置，由 XAML 绑定自动更新 UI
     /// </summary>
     private void UpdateDisplayContent()
     {
@@ -266,15 +250,12 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
         _isAnimating = false;
     }
 
-    private void OnControlUnloaded(object? sender, global::Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnControlUnloaded(object? sender, RoutedEventArgs e)
     {
         _timer?.Stop();
         _timer?.Dispose();
         _timer = null;
-        foreach (var birthday in _subscribedBirthdays)
-        {
-            birthday.PropertyChanged -= OnBirthdayPropertyChanged;
-        }
+        foreach (var birthday in _subscribedBirthdays) birthday.PropertyChanged -= OnBirthdayPropertyChanged;
         _subscribedBirthdays.Clear();
         GlobalSettings.Birthdays.CollectionChanged -= OnBirthdaysChanged;
         GlobalSettings.PropertyChanged -= OnGlobalSettingsPropertyChanged;

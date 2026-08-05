@@ -30,11 +30,6 @@
                         <ToggleSwitch IsChecked="{Binding IsShowPersonAge}"/>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="紧凑模式">
-                        <controls:SettingsExpanderItem.Footer>
-                            <ToggleSwitch IsChecked="{Binding IsCompactModeEnabled}"/>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
                     <controls:SettingsExpanderItem Content="循环切换">
                         <controls:SettingsExpanderItem.Footer>
                             <ToggleSwitch IsChecked="{Binding IsCycleEnabled}"/>

@@ -1,13 +1,13 @@
-<ci:ComponentBase x:Class="BirthReminde.Views.birthreminder"
-                         x:TypeArguments="models:BirthRemindeComponentSettings"
-                         xmlns="https://github.com/avaloniaui"
-                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                         xmlns:ci="http://classisland.tech/schemas/xaml/core"
-                         xmlns:models="clr-namespace:BirthReminde.Models"
-                         mc:Ignorable="d" 
-                         d:DesignHeight="40" d:DesignWidth="200">
+<ci:ComponentBase x:Class="BirthReminde.Views.Components.birthreminder"
+                  x:TypeArguments="models:BirthRemindeComponentSettings"
+                  xmlns="https://github.com/avaloniaui"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:ci="http://classisland.tech/schemas/xaml/core"
+                  xmlns:models="clr-namespace:BirthReminde.Models"
+                  mc:Ignorable="d"
+                  d:DesignHeight="40" d:DesignWidth="200">
     <ci:ComponentBase.Styles>
         <Style Selector="TextBlock.body">
             <Setter Property="FontSize" Value="{DynamicResource MainWindowBodyFontSize}" />
@@ -16,8 +16,9 @@
             <Setter Property="FontSize" Value="{DynamicResource MainWindowEmphasizedFontSize}" />
         </Style>
     </ci:ComponentBase.Styles>
-    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ci:ComponentBase}}}"
-          VerticalAlignment="Stretch" TextElement.FontSize="{DynamicResource MainWindowBodyFontSize}">
+    <Grid
+        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ci:ComponentBase}}}"
+        VerticalAlignment="Stretch" TextElement.FontSize="{DynamicResource MainWindowBodyFontSize}">
         <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center"
                     x:Name="CircleProgressRoot">
             <TextBlock x:Name="DisplayTextBlock"

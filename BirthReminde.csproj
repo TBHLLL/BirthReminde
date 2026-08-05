@@ -39,6 +39,10 @@
         <DependentUpon>birthreminersettings.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Components\birthreminder.axaml.cs">
+        <DependentUpon>birthreminder.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>
