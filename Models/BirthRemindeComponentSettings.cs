@@ -15,7 +15,7 @@ public partial class BirthRemindeComponentSettings : ObservableObject
     private bool _isCompactModeEnabled = true;
 
     [ObservableProperty]
-    private bool _isCycleEnabled = false;
+    private bool _isCycleEnabled = true;
 
     [ObservableProperty]
     private double _cycleIntervalSeconds = 5.0;
@@ -24,7 +24,7 @@ public partial class BirthRemindeComponentSettings : ObservableObject
     private bool _isAnimationEnabled = true;
 
     [ObservableProperty] 
-    private bool _isShowPersonAge = true;
+    private bool _isShowPersonAge = false;
 
     [ObservableProperty] private string _displayTextBlock = "";
     [ObservableProperty] private string _subDisplayTextBlock = "近期无生日";
