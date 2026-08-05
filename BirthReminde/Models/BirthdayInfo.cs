@@ -5,11 +5,14 @@ namespace BirthReminde.Models;
 
 public partial class BirthdayInfo : ObservableObject
 {
-    public string Name { get; set; } = string.Empty;
-    
-    public DateTime Date { get; set; } = DateTime.Now;
-    
-    public string? Notes { get; set; }
+    [ObservableProperty]
+    private string _name = string.Empty;
+
+    [ObservableProperty]
+    private DateTime _date = DateTime.Now;
+
+    [ObservableProperty]
+    private string? _notes;
 
     public int GetDaysUntilBirthday()
     {

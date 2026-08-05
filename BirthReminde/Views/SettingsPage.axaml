@@ -31,13 +31,16 @@
                                     MonthVisible="True"
                                     DayVisible="True"
                                     YearVisible="False"
-                                    Width="150"/>
+                                    Width="300"/>
                         <Button Content="添加"
                                 Click="AddBirthday_Click"
                                 Width="80"/>
                     </StackPanel>
                     <ListBox x:Name="BirthdaysListBox"
                              ItemsSource="{Binding Settings.Birthdays}"
+                             SelectionMode="Multiple"
+                             SelectionChanged="BirthdaysListBox_OnSelectionChanged"
+                             DoubleTapped="BirthdaysListBox_OnDoubleTapped"
                              Height="250">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -52,6 +55,10 @@
                                                Width="150"
                                                VerticalAlignment="Center"
                                                Classes="l-instructive"/>
+                                    <Button Content="编辑"
+                                            Click="EditBirthday_Click"
+                                            Width="60"
+                                            Margin="8 0 0 0"/>
                                     <Button Content="删除"
                                             Click="RemoveBirthday_Click"
                                             Width="60"
@@ -60,6 +67,15 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                    <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Spacing="8">
+                        <Button x:Name="DeleteSelectedButton"
+                                Content="删除选中"
+                                Click="RemoveSelected_Click"
+                                Width="100"/>
+                        <TextBlock Text="按住 Ctrl/Shift 可多选，双击行编辑" 
+                                   Opacity="0.6"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
                 </StackPanel>
             </controls:SettingsExpander> <!-- 设置页面的常规设置 -->
 

@@ -34,6 +34,7 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
     private int _cycleIndex;
     private bool _isAnimating;
     private string _lastDisplayKey = "";
+    private readonly HashSet<BirthdayInfo> _subscribedBirthdays = new();
 
     public birthreminder()
     {
@@ -47,6 +48,7 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
         GlobalSettings.Birthdays.CollectionChanged += OnBirthdaysChanged;
         GlobalSettings.PropertyChanged += OnGlobalSettingsPropertyChanged;
         Settings.PropertyChanged += OnSettingsPropertyChanged;
+        ResyncBirthdaySubscriptions();
         RefreshUpcomingList();
         UpdateDisplay();
         _lastCycleTime = DateTime.Now;
@@ -55,6 +57,31 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
     }
 
     private void OnBirthdaysChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            ResyncBirthdaySubscriptions();
+            RefreshUpcomingList();
+            UpdateDisplay();
+        });
+    }
+
+    private void ResyncBirthdaySubscriptions()
+    {
+        foreach (var birthday in _subscribedBirthdays)
+        {
+            birthday.PropertyChanged -= OnBirthdayPropertyChanged;
+        }
+        _subscribedBirthdays.Clear();
+
+        foreach (var birthday in GlobalSettings.Birthdays)
+        {
+            birthday.PropertyChanged += OnBirthdayPropertyChanged;
+            _subscribedBirthdays.Add(birthday);
+        }
+    }
+
+    private void OnBirthdayPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         Dispatcher.UIThread.InvokeAsync(() =>
         {
@@ -244,6 +271,11 @@ public partial class birthreminder : ComponentBase<BirthRemindeComponentSettings
         _timer?.Stop();
         _timer?.Dispose();
         _timer = null;
+        foreach (var birthday in _subscribedBirthdays)
+        {
+            birthday.PropertyChanged -= OnBirthdayPropertyChanged;
+        }
+        _subscribedBirthdays.Clear();
         GlobalSettings.Birthdays.CollectionChanged -= OnBirthdaysChanged;
         GlobalSettings.PropertyChanged -= OnGlobalSettingsPropertyChanged;
         Settings.PropertyChanged -= OnSettingsPropertyChanged;
