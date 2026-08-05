@@ -1,8 +1,9 @@
 using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BirthReminde.Models;
 
-public class BirthdayInfo
+public partial class BirthdayInfo : ObservableObject
 {
     public string Name { get; set; } = string.Empty;
     

@@ -1,4 +1,4 @@
-﻿<ci:ComponentBase x:TypeArguments="models:BirthRemindeComponentSettings"
+<ci:ComponentBase x:TypeArguments="models:BirthRemindeComponentSettings"
                   x:Class="BirthReminde.Views.Components.BirthdayTodayComponentSettingsControl"
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -18,29 +18,19 @@
             <!--                    Width="120" -->
             <!--                    Value="{Binding MaxNameCount}" /> -->
             <!-- </StackPanel> -->
-            <TextBlock Text="超过该数量时只显示“今日生日：N 人”。"
-                       Opacity="0.7"
-                       TextWrapping="Wrap" />
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE837;}" 
+            <!-- <TextBlock Text="字体大小与颜色请在编辑模式中选中本组件，通过「高级设置」调整。" -->
+            <!--            Opacity="0.7" -->
+            <!--            TextWrapping="Wrap" /> -->
+            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE8AD;}" 
                                             Header="显示设置"
                                             Description="自定义生日提醒的显示样式"
                                             IsExpanded="True">
-                    <controls:SettingsExpanderItem Content="字体大小">
-                        <controls:SettingsExpanderItem.Footer>
-                            <controls:NumberBox VerticalAlignment="Center"
-                                                 MinWidth="147"
-                                                 SpinButtonPlacementMode="Inline"
-                                                 Value="{Binding FontSize}"/>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem Content="字体颜色">
-                        <controls:SettingsExpanderItem.Footer>
-                            <ci:Field>
-                                <!-- <ci:ColorPicker SelectedColor="{Binding FontColor}" /> -->
-                            </ci:Field>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem Content="紧凑模式">
+                <controls:SettingsExpanderItem Content="显示年龄">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch IsChecked="{Binding IsShowPersonAge}"/>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="紧凑模式">
                         <controls:SettingsExpanderItem.Footer>
                             <ToggleSwitch IsChecked="{Binding IsCompactModeEnabled}"/>
                         </controls:SettingsExpanderItem.Footer>
@@ -54,8 +44,7 @@
                         <controls:SettingsExpanderItem.Footer>
                             <controls:NumberBox VerticalAlignment="Center"
                                                  MinWidth="147"
-                                                 Minimum="1"
-                                                 Maximum="60"
+                                                 Minimum="0.1"
                                                  SpinButtonPlacementMode="Inline"
                                                  Value="{Binding CycleIntervalSeconds}"/>
                         </controls:SettingsExpanderItem.Footer>

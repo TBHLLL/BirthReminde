@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace BirthReminde.Views;
 
-[SettingsPageInfo("plug.plugSettingsPage", "生日设置", "\ue4c4", "\ue4c3", SettingsPageCategory.External)]
+[SettingsPageInfo("plug.plugSettingsPage", "生日设置", "\uE8AD", "\uE8AC", SettingsPageCategory.External)]
 public partial class SettingsPage : SettingsPageBase
 {
     public SettingsPage()

@@ -17,8 +17,8 @@
       d:DataContext="{d:DesignInstance local:SettingsPage}">
     <ScrollViewer>
         <StackPanel Classes="settings-container animated-intro">
-            <ci:IconText Glyph="&#xE4C4;" Text="常规设置" Margin="0 0 0 4" />
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE4C4;}" 
+            <ci:IconText Glyph="&#xE8AD;" Text="常规设置" Margin="0 0 0 4" />
+            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE8AD;}" 
                                        Header="生日管理"
                                        Description="添加、编辑和删除生日信息"
                                        IsExpanded="True">
@@ -28,6 +28,9 @@
                                   Watermark="姓名"
                                   Width="150"/>
                         <DatePicker x:Name="DatePicker"
+                                    MonthVisible="True"
+                                    DayVisible="True"
+                                    YearVisible="False"
                                     Width="150"/>
                         <Button Content="添加"
                                 Click="AddBirthday_Click"
@@ -59,53 +62,7 @@
                     </ListBox>
                 </StackPanel>
             </controls:SettingsExpander> <!-- 设置页面的常规设置 -->
-            
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE837;}" 
-                                        Header="显示设置"
-                                        Description="自定义生日提醒的显示样式"
-                                        IsExpanded="True">
-                <controls:SettingsExpanderItem Content="字体大小">
-                    <controls:SettingsExpanderItem.Footer>
-                        <controls:NumberBox VerticalAlignment="Center"
-                                             MinWidth="147"
-                                             SpinButtonPlacementMode="Inline"
-                                             Value="{Binding Settings.FontSize}"/>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="字体颜色">
-                    <controls:SettingsExpanderItem.Footer>
-                        <ci:Field>
-                            
-                        </ci:Field>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="紧凑模式">
-                    <controls:SettingsExpanderItem.Footer>
-                        <ToggleSwitch IsChecked="{Binding Settings.IsCompactModeEnabled}"/>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="循环切换">
-                    <controls:SettingsExpanderItem.Footer>
-                        <ToggleSwitch IsChecked="{Binding Settings.IsCycleEnabled}"/>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="切换间隔(秒)">
-                    <controls:SettingsExpanderItem.Footer>
-                        <controls:NumberBox VerticalAlignment="Center"
-                                             MinWidth="147"
-                                             Minimum="1"
-                                             Maximum="60"
-                                             SpinButtonPlacementMode="Inline"
-                                             Value="{Binding Settings.CycleIntervalSeconds}"/>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="过渡动画">
-                    <controls:SettingsExpanderItem.Footer>
-                        <ToggleSwitch IsChecked="{Binding Settings.IsAnimationEnabled}"/>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-            </controls:SettingsExpander>
-            
+
             <Separator Margin="0 12 0 4" />
             <ci:IconText Glyph="&#xE4C4;" Text="文件设置" Margin="0 0 0 4" />
             <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE8A5;}" 
@@ -113,7 +70,7 @@
                                        Description="从CSV文件批量导入生日信息（格式：姓名,日期,备注）"
                                        IsExpanded="False">
                 <StackPanel Margin="0 8 0 0" Spacing="8">
-                    <TextBlock Text="CSV文件格式：姓名,日期(yyyy-MM-dd),备注（可选）"
+                    <TextBlock Text="CSV文件格式：姓名,日期(如 2026/8/5、2026-08-05、2026年8月5日),备注（可选）"
                                Opacity="0.7"
                                TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
@@ -129,6 +86,22 @@
                                 Width="80" />
                     </StackPanel>
                 </StackPanel>
+            </controls:SettingsExpander>
+            
+            <Separator Margin="0 12 0 4" />
+            <ci:IconText Glyph="&#xE015;" Text="提醒设置" Margin="0 0 0 4" />
+            <controls:SettingsExpander Header="提醒设置"
+                                       Description="配置生日提醒的相关选项"
+                                       IsExpanded="False">
+                <controls:SettingsExpanderItem Content="生日提醒范围(天)">
+                    <controls:SettingsExpanderItem.Footer>
+                        <controls:NumberBox VerticalAlignment="Center"
+                                            MinWidth="147"
+                                            Minimum="1"
+                                            SpinButtonPlacementMode="Inline"
+                                            Value="{Binding Settings.RemideRange}"/>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
         </StackPanel>
     </ScrollViewer>

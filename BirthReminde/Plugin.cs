@@ -8,6 +8,7 @@ using BirthReminde.Views;
 using BirthReminde.Settings;
 using ClassIsland.Core.Extensions.Registry;
 using ClassIsland.Shared.Helpers;
+using System.Text;
 
 namespace BirthReminde;
 
@@ -19,6 +20,9 @@ public class Plugin : PluginBase
     public override void Initialize(HostBuilderContext context, IServiceCollection services)
     {
         Instance = this;
+
+        // 注册 GB18030/GBK 等代码页支持，供 CSV 导入识别中文编码
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
         var settings = LoadSettings();
         services.AddSingleton(settings);
