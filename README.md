@@ -107,3 +107,5 @@ dotnet build
 
 ## 许可证
 
+本项目基于 GNU Lesser General Public License v3.0 许可
+
