@@ -8,6 +8,9 @@ name: 生日提醒
 description: 显示当天或即将到来的生日提醒，支持添加、删除生日信息，自定义显示样式
 entranceAssembly: "BirthReminde.dll"
 url: https://github.com/TBHLLL/BirthReminde
-version: 0.1.0.0
+version: 1.0.0.0
 apiVersion: 2.0.0.0
 author: TBHLLL
+repoOwner: TBHLLL
+repoName: BirthReminde
+assetsRoot: "master/BirthReminde"
