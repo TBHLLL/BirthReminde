@@ -9,6 +9,8 @@ using BirthReminde.Settings;
 using ClassIsland.Core.Extensions.Registry;
 using ClassIsland.Shared.Helpers;
 using System.Text;
+using BirthReminde.Models;
+using BirthReminde.Services.Notifications;
 using birthreminder = BirthReminde.Views.Components.birthreminder;
 
 namespace BirthReminde;
@@ -30,6 +32,8 @@ public class Plugin : PluginBase
 
         services.AddComponent<birthreminder, BirthReminde.Views.Components.BirthdayTodayComponentSettingsControl>();
         services.AddSettingsPage<BirthReminde.Views.SettingsPage>();
+
+        services.AddNotificationProvider<BirthNotified, BirthNotificationProviderSettings>();
     }
 
     public static BirthRemindeSettings LoadSettings()

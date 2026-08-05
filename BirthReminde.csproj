@@ -31,10 +31,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="Views\Components\birthreminersettings.axaml.cs">
         <DependentUpon>birthreminersettings.axaml</DependentUpon>
         <SubType>Code</SubType>

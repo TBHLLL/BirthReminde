@@ -12,7 +12,7 @@ using Timer = System.Timers.Timer;
 namespace BirthReminde.Views.Components;
 
 [ComponentInfo(
-    "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+    "FB677B13-A657-F6B1-DAEB-7AA8FD6655BD",
     "生日提醒",
     "\uE8AD",
     "显示当天或即将到来的生日提醒"

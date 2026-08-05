@@ -1,0 +1,20 @@
+﻿<ci:NotificationProviderControlBase
+    x:Class="BirthReminde.Views.BirthNotificationProviderSettings"
+    x:TypeArguments="models:BirthNotificationSettings"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ci="http://classisland.tech/schemas/xaml/core"
+    xmlns:local="clr-namespace:BirthReminde.Views"
+    xmlns:models="clr-namespace:BirthReminde.Models"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=local:BirthNotificationProviderSettings}}">
+        <TextBox Text="提醒时间"/>
+        <DatePicker x:Name="DatePicker"
+                    MonthVisible="True"
+                    DayVisible="True"
+                    Width="300"/>
+    </StackPanel>
+</ci:NotificationProviderControlBase>
