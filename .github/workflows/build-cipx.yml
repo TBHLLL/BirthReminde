@@ -9,6 +9,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
   build-cipx:
     runs-on: windows-latest
