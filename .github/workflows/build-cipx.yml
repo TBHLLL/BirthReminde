@@ -1,0 +1,64 @@
+name: Build CIPX
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-cipx:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore
+        run: dotnet restore BirthReminde.csproj
+
+      - name: Build and package (.cipx)
+        run: dotnet build BirthReminde.csproj -c Release -p:CreateCipx=true
+
+      - name: Upload CIPX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BirthReminde-cipx
+          path: |
+            cipx/*.cipx
+            cipx/checksums.md
+          if-no-files-found: error
+
+      - name: Create release if missing
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $tag already exists."
+          else
+            gh release create "$tag" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "$tag" \
+              --generate-notes
+          fi
+
+      - name: Upload CIPX to release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "$GITHUB_REF_NAME" \
+            cipx/*.cipx \
+            cipx/checksums.md \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
