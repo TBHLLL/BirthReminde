@@ -1,16 +1,13 @@
 name: Build CIPX
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+    tags:
+      - '*'
+  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-cipx:
@@ -39,3 +36,29 @@ jobs:
             cipx/*.cipx
             cipx/checksums.md
           if-no-files-found: error
+
+      - name: Create release if missing
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $tag already exists."
+          else
+            gh release create "$tag" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "$tag" \
+              --generate-notes
+          fi
+
+      - name: Upload CIPX to release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "$GITHUB_REF_NAME" \
+            cipx/*.cipx \
+            cipx/checksums.md \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
