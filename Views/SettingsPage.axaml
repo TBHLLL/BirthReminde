@@ -104,16 +104,16 @@
             <Separator Margin="0 12 0 4" />
             <ci:IconText Glyph="&#xe064;" Text="文件设置" Margin="0 0 0 4" />
             <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xe881;}" 
-                                       Header="CSV导入"
-                                       Description="从CSV文件批量导入生日信息（格式：姓名,日期,备注）"
+                                       Header="文件导入"
+                                       Description="从 CSV 或 Excel 文件批量导入生日信息（格式：姓名,日期,备注）"
                                        IsExpanded="False">
                 <StackPanel Margin="0 8 0 0" Spacing="8">
-                    <TextBlock Text="CSV文件格式：姓名,日期(如 2026/8/5、2026-08-05、2026年8月5日),备注（可选）"
+                    <TextBlock Text="文件格式：姓名,日期(如 2026/8/5、2026-08-05、2026年8月5日),备注（可选）。支持 .csv 与 .xlsx。"
                                Opacity="0.7"
                                TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <TextBox x:Name="CsvFilePathTextBox"
-                                 Watermark="CSV文件路径"
+                                 Watermark="文件路径"
                                  Width="350"
                                  IsReadOnly="True" />
                         <Button Content="选择文件"
@@ -122,6 +122,25 @@
                         <Button Content="导入"
                                 Click="ImportCsv_Click"
                                 Width="80" />
+                    </StackPanel>
+                </StackPanel>
+            </controls:SettingsExpander>
+
+            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xe881;}" 
+                                       Header="数据导出"
+                                       Description="把生日列表导出为 CSV 或 Excel 文件"
+                                       IsExpanded="False">
+                <StackPanel Margin="0 8 0 0" Spacing="8">
+                    <TextBlock Text="导出当前全部生日（姓名、日期、备注），CSV 可直接再次导入。"
+                               Opacity="0.7"
+                               TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="导出 CSV"
+                                Click="ExportCsv_Click"
+                                Width="100" />
+                        <Button Content="导出 Excel"
+                                Click="ExportExcel_Click"
+                                Width="100" />
                     </StackPanel>
                 </StackPanel>
             </controls:SettingsExpander>

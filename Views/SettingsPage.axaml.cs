@@ -236,14 +236,13 @@ public partial class SettingsPage : SettingsPageBase
 
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "选择CSV文件",
+            Title = "选择文件",
             AllowMultiple = false,
             FileTypeFilter = new[]
             {
-                new FilePickerFileType("CSV文件")
-                {
-                    Patterns = new[] { "*.csv" }
-                }
+                new FilePickerFileType("支持的文件") { Patterns = new[] { "*.csv", "*.xlsx" } },
+                new FilePickerFileType("CSV文件") { Patterns = new[] { "*.csv" } },
+                new FilePickerFileType("Excel文件") { Patterns = new[] { "*.xlsx" } }
             }
         });
 
@@ -260,7 +259,7 @@ public partial class SettingsPage : SettingsPageBase
         if (string.IsNullOrEmpty(filePath))
             return;
 
-        var result = ImortCSV.AnalyzeImport(filePath, Settings.Birthdays);
+        var result = ImortFile.AnalyzeImport(filePath, Settings.Birthdays);
         if (result.AllBirthdays.Count == 0)
         {
             this.ShowWarningToast("没有解析到有效的生日数据，请检查 CSV 格式");
@@ -360,6 +359,49 @@ public partial class SettingsPage : SettingsPageBase
                 }
                 this.ShowSuccessToast($"已新增 {result.AllBirthdays.Count} 条（含重复）");
                 break;
+        }
+    }
+
+    private async void ExportCsv_Click(object? sender, RoutedEventArgs e)
+    {
+        await ExportToFileAsync("导出CSV文件", new FilePickerFileType("CSV文件") { Patterns = new[] { "*.csv" } }, "birthdays.csv", ExportFile.ExportCsv);
+    }
+
+    private async void ExportExcel_Click(object? sender, RoutedEventArgs e)
+    {
+        await ExportToFileAsync("导出Excel文件", new FilePickerFileType("Excel文件") { Patterns = new[] { "*.xlsx" } }, "birthdays.xlsx", ExportFile.ExportExcel);
+    }
+
+    private async Task ExportToFileAsync(string title, FilePickerFileType type, string suggestedName, Action<string, IEnumerable<BirthdayInfo>> exporter)
+    {
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel == null)
+            return;
+
+        if (Settings.Birthdays.Count == 0)
+        {
+            this.ShowWarningToast("没有可导出的生日数据");
+            return;
+        }
+
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = title,
+            SuggestedFileName = suggestedName,
+            DefaultExtension = type.Patterns![0].TrimStart('*'),
+            FileTypeChoices = new[] { type }
+        });
+        if (file == null)
+            return;
+
+        try
+        {
+            exporter(file.Path.LocalPath, Settings.Birthdays);
+            this.ShowSuccessToast($"已导出 {Settings.Birthdays.Count} 条生日");
+        }
+        catch (Exception ex)
+        {
+            this.ShowWarningToast($"导出失败：{ex.Message}");
         }
     }
 }

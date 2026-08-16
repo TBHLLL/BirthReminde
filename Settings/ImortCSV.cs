@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,85 +7,15 @@ using BirthReminde.Models;
 
 namespace BirthReminde.Settings;
 
-/// <summary>
-/// CSV 导入分析结果
-/// </summary>
-public class CsvImportResult
-{
-    /// <summary>文件中解析出的全部生日（内部同名已去重，最后一条生效）</summary>
-    public List<BirthdayInfo> AllBirthdays { get; } = new();
-
-    /// <summary>与现有列表不重名、可以新增的条目</summary>
-    public List<BirthdayInfo> NewBirthdays { get; } = new();
-
-    /// <summary>与现有列表重名（按名字忽略大小写、去首尾空格比对）的条目</summary>
-    public List<BirthdayInfo> Duplicates { get; } = new();
-}
-
 public class ImortCSV
 {
-    private static readonly string[] DateFormats =
-    {
-        "yyyy/M/d",
-        "yyyy/M/d H:mm:ss",
-        "yyyy-MM-dd",
-        "yyyy-M-d",
-        "yyyy-MM-dd HH:mm:ss",
-        "yyyy.M.d",
-        "M/d/yyyy",
-        "M-d-yyyy",
-        "yyyy年M月d日",
-        "yyyy年M月d日 HH:mm:ss"
-    };
-
     /// <summary>
     /// 解析 CSV 并与现有列表比对，返回可新增的条目和重名条目。
     /// </summary>
-    public static CsvImportResult AnalyzeImport(string filePath, IEnumerable<BirthdayInfo> existingBirthdays)
+    public static ImportResult AnalyzeImport(string filePath, IEnumerable<BirthdayInfo> existingBirthdays)
     {
-        var result = new CsvImportResult();
-        if (!File.Exists(filePath))
-            return result;
-
         var raw = ParseFile(filePath);
-        if (raw.Count == 0)
-            return result;
-
-        // CSV 内部同名去重：同名多行时最后一条内容生效，位置保留首次出现处
-        var ordered = new List<BirthdayInfo>();
-        var byName = new Dictionary<string, BirthdayInfo>(StringComparer.OrdinalIgnoreCase);
-        foreach (var birthday in raw)
-        {
-            var key = birthday.Name.Trim();
-            if (byName.TryGetValue(key, out var previous))
-            {
-                previous.Date = birthday.Date;
-                previous.Notes = birthday.Notes;
-            }
-            else
-            {
-                byName[key] = birthday;
-                ordered.Add(birthday);
-            }
-        }
-
-        result.AllBirthdays.AddRange(ordered);
-
-        // 与现有列表按名字比对（忽略大小写、去首尾空格）
-        var existingNames = new HashSet<string>(
-            existingBirthdays
-                .Where(x => !string.IsNullOrWhiteSpace(x.Name))
-                .Select(x => x.Name.Trim()),
-            StringComparer.OrdinalIgnoreCase);
-        foreach (var birthday in ordered)
-        {
-            if (existingNames.Contains(birthday.Name.Trim()))
-                result.Duplicates.Add(birthday);
-            else
-                result.NewBirthdays.Add(birthday);
-        }
-
-        return result;
+        return ImportAnalyzer.Analyze(raw, existingBirthdays);
     }
 
     private static List<BirthdayInfo> ParseFile(string filePath)
@@ -107,10 +36,10 @@ public class ImortCSV
                 continue;
 
             var name = parts[0].Trim();
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
                 continue;
 
-            if (!TryParseDate(parts[1], out var date))
+            if (!ImportAnalyzer.TryParseDate(parts[1], out var date))
                 continue;
 
             var notes = parts.Count > 2 ? string.Join(",", parts.Skip(2)).Trim() : null;
@@ -212,26 +141,5 @@ public class ImortCSV
 
         fields.Add(current.ToString());
         return fields;
-    }
-
-    /// <summary>
-    /// 宽松解析日期，兼容带不带前导零、斜杠/横杠/点分隔、中文日期等多种写法。
-    /// </summary>
-    private static bool TryParseDate(string text, out DateTime date)
-    {
-        date = default;
-        if (string.IsNullOrWhiteSpace(text))
-            return false;
-
-        text = text.Trim();
-
-        if (DateTime.TryParseExact(text, DateFormats, CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out date))
-            return true;
-
-        if (DateTime.TryParse(text, CultureInfo.GetCultureInfo("zh-CN"), DateTimeStyles.None, out date))
-            return true;
-
-        return DateTime.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
     }
 }

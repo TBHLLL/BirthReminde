@@ -1,6 +1,6 @@
 # 生日提醒（BirthReminde）
 
-一个用于 [ClassIsland](https://github.com/HelloWRC/ClassIsland) 的插件，可以在主界面显示当天或即将到来的生日提醒，并提供完整的生日信息管理与 CSV 批量导入能力。
+一个用于 [ClassIsland](https://github.com/HelloWRC/ClassIsland) 的插件，可以在主界面显示当天或即将到来的生日提醒，并提供完整的生日信息管理与 CSV / Excel 批量导入、导出能力。
 只是我没想到在制作此插件的时候已经有人发布了类似插件，但是已经做都做了，还是继续做出来了。
 
 >\[!caution]
@@ -10,14 +10,15 @@
 >\[!tip]
 > 这个介绍也是AI生成我改的（
 - 项目地址：[TBHLLL/BirthReminde](https://github.com/TBHLLL/BirthReminde)
-- 当前版本：1.0.0.0（见插件清单 `manifest.yml`）
+- 当前版本：1.1.1.0（见插件清单 `manifest.yml`）
 - 技术栈：C# / .NET 8（`net8.0-windows`）、Avalonia 11、FluentAvalonia、CommunityToolkit.Mvvm、ClassIsland 插件 SDK
 
 ## 功能介绍
 
 - 🎂 **生日提醒**：自动检测并显示当天或即将到来的生日，默认提醒范围为 7 天内，可自定义
 - 📝 **生日管理**：支持添加、编辑、删除生日，支持全选与批量删除，双击行可快速编辑
-- 📥 **CSV 批量导入**：自动识别 UTF-8 / UTF-16 / GBK 等编码，兼容多种日期写法，并支持重名处理
+- 📥 **批量导入**：CSV 自动识别 UTF-8 / UTF-16 / GBK 等编码，兼容多种日期写法并支持重名处理；Excel 支持 .xlsx
+- 📤 **数据导出**：可把生日列表导出为 CSV（可再次导入）或 Excel（.xlsx）文件
 - 🎨 **显示定制**：可开关年龄显示、循环切换、过渡动画，并可配置循环间隔
 
 ## 显示说明
@@ -38,8 +39,9 @@
 | 过渡动画 | ✅ 已完成 | 切换内容时淡出/淡入 |
 | 生日增删改、批量删除 | ✅ 已完成 | 设置页 DataGrid 管理，双击行编辑 |
 | CSV 批量导入 | ✅ 已完成 | 编码识别、日期解析、重名处理 |
+| Excel 导入 | ✅ 已完成 | 支持 .xlsx，复用重名处理 |
+| 数据导出 | ✅ 已完成 | 导出 CSV（可再次导入）或 Excel |
 | 通知推送 | ✅ 已完成 | 在满足特定规则集的时候触发 |
-| Excel 文件支持 | 🕐 待开发 | 计划支持 .xlsx 格式文件导入 |
 
 ## 项目结构
 
@@ -57,11 +59,16 @@ BirthReminde/
     │   ├── BirthdayInfo.cs          # 生日数据模型（倒计时、年龄计算）
     │   ├── BirthdayRowViewModel.cs  # 列表行包装（勾选状态，不持久化）
     │   └── BirthRemindeComponentSettings.cs
-    ├── Notifications/
-    │   └── BirthNotified.cs         # 通知提供者（待实现）
+    ├── Services/
+    │   └── Notifications/
+    │       └── BirthNotified.cs     # 通知提供者
     ├── Settings/
     │   ├── BirthRemindeSettings.cs  # 全局设置与自动保存
-    │   └── ImortCSV.cs              # CSV 解析与导入分析
+    │   ├── ImportAnalyzer.cs        # 导入公共逻辑（去重、日期解析）
+    │   ├── ImortCSV.cs              # CSV 解析
+    │   ├── ImortExcel.cs            # Excel(.xlsx) 解析
+    │   ├── ImortFile.cs             # 按扩展名分发导入
+    │   └── ExportFile.cs            # CSV / Excel 导出
     ├── Views/
     │   ├── birthreminder.axaml(.cs) # 主界面提醒组件
     │   └── Components/
@@ -91,8 +98,6 @@ CSV 格式为 `姓名,日期,备注(可选)`，例如：
 > \[!caution]
 > 这个功能是ai瞎写的，我还未对其进行验证，总之csv用excel编辑的yyyy/mm/dd格式是可以导入的。
 
-> \[!tip]
-> 未来会开发对.xlsx文件的支持
 ## 开发及验证
 
 环境要求：
@@ -108,10 +113,16 @@ dotnet restore
 dotnet build
 ```
 
+打包.cipx
+```powershell
+dotnet publish -p:CreateCipx=true
+```
+
 ## 更新日志
+- v1.1.1.0：新增 Excel（.xlsx）导入，以及 CSV / Excel 数据导出
 - v1.1.0.0 修复了在与节假日插件共用时的崩溃（早期写C#因为不会写看别人的代码把UUID一块复制下来了🙇🙇🙇），更新在特定规则下发起生日通知
 - v1.0.0.0 基本版本
 ## 许可证
 
 本项目基于 GNU Lesser General Public License v3.0 许可
-
+MiniExcel 许可证基于 Apache-2.0，本项目部分功能基于MiniExcel实现

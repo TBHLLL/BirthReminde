@@ -16,6 +16,7 @@
         </PackageReference>
         <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.5" />
+        <PackageReference Include="MiniExcel" Version="1.39.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,5 +41,15 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
+
+    <!-- MiniExcel 是插件独有依赖（宿主 ClassIsland 不提供），需随插件分发 -->
+    <Target Name="CopyMiniExcelToOutput" AfterTargets="Build" BeforeTargets="CreateCipx">
+        <ItemGroup>
+            <_MiniExcelLib Include="$(NuGetPackageRoot)miniexcel\*\lib\net8.0\MiniExcel.dll" />
+        </ItemGroup>
+        <Copy SourceFiles="@(_MiniExcelLib)"
+              DestinationFolder="$(OutputPath)"
+              SkipUnchangedFiles="true" />
+    </Target>
 
 </Project>
