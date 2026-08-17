@@ -18,14 +18,14 @@
     <ScrollViewer>
         <StackPanel Classes="settings-container animated-intro">
             <ci:IconText Glyph="&#xE8AD;" Text="常规设置" Margin="0 0 0 4" />
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE8AD;}" 
+            <controls:FASettingsExpander IconSource="{ci:FluentIconSource &#xE8AD;}" 
                                        Header="生日管理"
                                        Description="添加、编辑和删除生日信息"
                                        IsExpanded="True">
                 <StackPanel Margin="0 8 0 0">
                     <StackPanel Orientation="Horizontal" Margin="0 0 0 8" Spacing="8">
                         <TextBox x:Name="NameTextBox"
-                                  Watermark="姓名"
+                                  PlaceholderText="姓名"
                                   Width="150"/>
                         <DatePicker x:Name="DatePicker"
                                     MonthVisible="True"
@@ -99,11 +99,11 @@
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
-            </controls:SettingsExpander> <!-- 设置页面的常规设置 -->
+            </controls:FASettingsExpander> <!-- 设置页面的常规设置 -->
 
             <Separator Margin="0 12 0 4" />
             <ci:IconText Glyph="&#xe064;" Text="文件设置" Margin="0 0 0 4" />
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xe881;}" 
+            <controls:FASettingsExpander IconSource="{ci:FluentIconSource &#xe881;}" 
                                        Header="文件导入"
                                        Description="从 CSV 或 Excel 文件批量导入生日信息（格式：姓名,日期,备注）"
                                        IsExpanded="False">
@@ -113,7 +113,7 @@
                                TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <TextBox x:Name="CsvFilePathTextBox"
-                                 Watermark="文件路径"
+                                 PlaceholderText="文件路径"
                                  Width="350"
                                  IsReadOnly="True" />
                         <Button Content="选择文件"
@@ -124,9 +124,9 @@
                                 Width="80" />
                     </StackPanel>
                 </StackPanel>
-            </controls:SettingsExpander>
+            </controls:FASettingsExpander>
 
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xe881;}" 
+            <controls:FASettingsExpander IconSource="{ci:FluentIconSource &#xe881;}" 
                                        Header="数据导出"
                                        Description="把生日列表导出为 CSV 或 Excel 文件"
                                        IsExpanded="False">
@@ -143,24 +143,24 @@
                                 Width="100" />
                     </StackPanel>
                 </StackPanel>
-            </controls:SettingsExpander>
+            </controls:FASettingsExpander>
             
             <Separator Margin="0 12 0 4" />
             <ci:IconText Glyph="&#xe025;" Text="提醒设置" Margin="0 0 0 4" />
-            <controls:SettingsExpander Header="提醒设置"
+            <controls:FASettingsExpander Header="提醒设置"
                                        IconSource="{ci:FluentIconSource &#xe025;}"
                                        Description="配置生日提醒的相关选项"
                                        IsExpanded="False">
-                <controls:SettingsExpanderItem Content="生日提醒范围(天)">
-                    <controls:SettingsExpanderItem.Footer>
-                        <controls:NumberBox VerticalAlignment="Center"
+                <controls:FASettingsExpanderItem Content="生日提醒范围(天)">
+                    <controls:FASettingsExpanderItem.Footer>
+                        <controls:FANumberBox VerticalAlignment="Center"
                                             MinWidth="147"
                                             Minimum="1"
                                             SpinButtonPlacementMode="Inline"
                                             Value="{Binding Settings.RemideRange}"/>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-            </controls:SettingsExpander>
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+            </controls:FASettingsExpander>
         </StackPanel>
     </ScrollViewer>
 </ci:SettingsPageBase>

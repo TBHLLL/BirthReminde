@@ -5,6 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>14</LangVersion>
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <CreateCipx>true</CreateCipx>
+        <!-- 与宿主 ClassIsland 保持一致：默认关闭编译绑定（插件 XAML 使用反射绑定） -->
+        <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -16,9 +20,8 @@
         <PackageReference Include="ClassIsland.PluginSdk" Version="2.1.1">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
-        <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.11" />
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
-        <PackageReference Include="MiniExcel" Version="1.45.0" />
+        <PackageReference Include="MiniExcel" Version="2.0.0-preview.4" />
     </ItemGroup>
 
     <ItemGroup>
@@ -47,7 +50,7 @@
     <!-- MiniExcel 是插件独有依赖（宿主 ClassIsland 不提供），需随插件分发 -->
     <Target Name="CopyMiniExcelToOutput" AfterTargets="Build" BeforeTargets="CreateCipx">
         <ItemGroup>
-            <_MiniExcelLib Include="$(NuGetPackageRoot)miniexcel\*\lib\net8.0\MiniExcel.dll" />
+            <_MiniExcelLib Include="$(NuGetPackageRoot)miniexcel\*\lib\net10.0\MiniExcel.dll" />
         </ItemGroup>
         <Copy SourceFiles="@(_MiniExcelLib)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
     </Target>

@@ -11,6 +11,7 @@ using ClassIsland.Core.Attributes;
 using ClassIsland.Core.Enums.SettingsWindow;
 using ClassIsland.Shared;
 using ClassIsland.Core.Helpers.UI;
+using ClassIsland.Core.Extensions.UI;
 using FluentAvalonia.UI.Controls;
 using Avalonia.Media;
 using System;
@@ -168,9 +169,9 @@ public partial class SettingsPage : SettingsPageBase
 
     private async Task ShowEditDialog(BirthdayInfo birthday)
     {
-        var nameBox = new TextBox { Text = birthday.Name, Watermark = "姓名", MinWidth = 220 };
+        var nameBox = new TextBox { Text = birthday.Name, PlaceholderText = "姓名", MinWidth = 220 };
         var datePicker = new DatePicker { SelectedDate = birthday.Date };
-        var notesBox = new TextBox { Text = birthday.Notes, Watermark = "备注（可选）", MinWidth = 220 };
+        var notesBox = new TextBox { Text = birthday.Notes, PlaceholderText = "备注（可选）", MinWidth = 220 };
 
         var panel = new StackPanel
         {
@@ -186,17 +187,17 @@ public partial class SettingsPage : SettingsPageBase
             }
         };
 
-        var dialog = new ContentDialog
+        var dialog = new FAContentDialog
         {
             Title = "编辑生日",
             Content = panel,
             PrimaryButtonText = "保存",
             CloseButtonText = "取消",
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
 
-        var dialogResult = await dialog.ShowAsync(TopLevel.GetTopLevel(this));
-        if (dialogResult != ContentDialogResult.Primary)
+        var dialogResult = await dialog.ShowAsyncAuto(TopLevel.GetTopLevel(this));
+        if (dialogResult != FAContentDialogResult.Primary)
             return;
 
         var newName = nameBox.Text?.Trim();
@@ -314,20 +315,20 @@ public partial class SettingsPage : SettingsPageBase
             }
         };
 
-        var dialog = new ContentDialog
+        var dialog = new FAContentDialog
         {
             Title = "发现重复名字",
             Content = panel,
             PrimaryButtonText = "覆盖已有",
             SecondaryButtonText = "跳过重复",
             CloseButtonText = "全部新增",
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
 
-        var choice = await dialog.ShowAsync(TopLevel.GetTopLevel(this));
+        var choice = await dialog.ShowAsyncAuto(TopLevel.GetTopLevel(this));
         switch (choice)
         {
-            case ContentDialogResult.Primary: // 覆盖已有
+            case FAContentDialogResult.Primary: // 覆盖已有
                 foreach (var duplicate in result.Duplicates)
                 {
                     var target = Settings.Birthdays.FirstOrDefault(x =>
@@ -345,7 +346,7 @@ public partial class SettingsPage : SettingsPageBase
                 Settings.Save();
                 this.ShowSuccessToast($"已覆盖 {result.Duplicates.Count} 条，新增 {result.NewBirthdays.Count} 条");
                 break;
-            case ContentDialogResult.Secondary: // 跳过重复
+            case FAContentDialogResult.Secondary: // 跳过重复
                 foreach (var birthday in result.NewBirthdays)
                 {
                     Settings.Birthdays.Add(birthday);

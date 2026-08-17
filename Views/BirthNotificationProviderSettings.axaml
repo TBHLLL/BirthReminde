@@ -1,4 +1,4 @@
-﻿<ci:NotificationProviderControlBase
+<ci:NotificationProviderControlBase
     x:Class="BirthReminde.Views.BirthNotificationProviderSettings"
     x:TypeArguments="models:BirthNotificationSettings"
     xmlns="https://github.com/avaloniaui"
@@ -12,18 +12,18 @@
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=local:BirthNotificationProviderSettings}}">
-        <controls:SettingsExpander Header="提醒规则"
+        <controls:FASettingsExpander Header="提醒规则"
                                         Description="设置生日提醒的触发条件"
                                         IsExpanded="True">
-            <controls:SettingsExpanderItem Content="显示年龄">
-                <controls:SettingsExpanderItem.Footer>
+            <controls:FASettingsExpanderItem Content="显示年龄">
+                <controls:FASettingsExpanderItem.Footer>
                     <ToggleSwitch IsChecked="{Binding Settings.IsShowAge}"/>
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+            <controls:FASettingsExpanderItem>
                 <ci:RulesetControl Ruleset="{Binding Settings.TriggerRuleset}"
                                    ShowTitle="False"/>
-            </controls:SettingsExpanderItem>
-        </controls:SettingsExpander>
+            </controls:FASettingsExpanderItem>
+        </controls:FASettingsExpander>
     </StackPanel>
 </ci:NotificationProviderControlBase>

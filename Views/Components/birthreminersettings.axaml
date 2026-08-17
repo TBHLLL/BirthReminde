@@ -21,35 +21,35 @@
             <!-- <TextBlock Text="字体大小与颜色请在编辑模式中选中本组件，通过「高级设置」调整。" -->
             <!--            Opacity="0.7" -->
             <!--            TextWrapping="Wrap" /> -->
-            <controls:SettingsExpander IconSource="{ci:FluentIconSource &#xE8AD;}" 
+            <controls:FASettingsExpander IconSource="{ci:FluentIconSource &#xE8AD;}" 
                                             Header="显示设置"
                                             Description="自定义生日提醒的显示样式"
                                             IsExpanded="True">
-                <controls:SettingsExpanderItem Content="显示年龄">
-                    <controls:SettingsExpanderItem.Footer>
+                <controls:FASettingsExpanderItem Content="显示年龄">
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch IsChecked="{Binding IsShowPersonAge}"/>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem Content="循环切换">
-                        <controls:SettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                    <controls:FASettingsExpanderItem Content="循环切换">
+                        <controls:FASettingsExpanderItem.Footer>
                             <ToggleSwitch IsChecked="{Binding IsCycleEnabled}"/>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem Content="切换间隔(秒)">
-                        <controls:SettingsExpanderItem.Footer>
-                            <controls:NumberBox VerticalAlignment="Center"
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                    <controls:FASettingsExpanderItem Content="切换间隔(秒)">
+                        <controls:FASettingsExpanderItem.Footer>
+                            <controls:FANumberBox VerticalAlignment="Center"
                                                  MinWidth="147"
                                                  Minimum="0.1"
                                                  SpinButtonPlacementMode="Inline"
                                                  Value="{Binding CycleIntervalSeconds}"/>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem Content="过渡动画">
-                        <controls:SettingsExpanderItem.Footer>
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                    <controls:FASettingsExpanderItem Content="过渡动画">
+                        <controls:FASettingsExpanderItem.Footer>
                             <ToggleSwitch IsChecked="{Binding IsAnimationEnabled}"/>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                </controls:SettingsExpander>
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                </controls:FASettingsExpander>
         </StackPanel>
     </ScrollViewer>
     
