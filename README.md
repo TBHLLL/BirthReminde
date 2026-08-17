@@ -1,4 +1,6 @@
 # 生日提醒（BirthReminde）
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTBHLLL%2FBirthReminde.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTBHLLL%2FBirthReminde?ref=badge_shield)
+
 
 一个用于 [ClassIsland](https://github.com/HelloWRC/ClassIsland) 的插件，可以在主界面显示当天或即将到来的生日提醒，并提供完整的生日信息管理与 CSV / Excel 批量导入、导出能力。
 只是我没想到在制作此插件的时候已经有人发布了类似插件，但是已经做都做了，还是继续做出来了。
@@ -126,3 +128,7 @@ dotnet publish -p:CreateCipx=true
 
 本项目基于 GNU Lesser General Public License v3.0 许可
 MiniExcel 许可证基于 Apache-2.0，本项目部分功能基于MiniExcel实现
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTBHLLL%2FBirthReminde.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTBHLLL%2FBirthReminde?ref=badge_large)
