@@ -7,8 +7,7 @@
         <LangVersion>14</LangVersion>
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <CreateCipx>true</CreateCipx>
-        <!-- 与宿主 ClassIsland 保持一致：默认关闭编译绑定（插件 XAML 使用反射绑定） -->
-        <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+        <!-- Avalonia 12 默认开启编译绑定（x:DataType + 具体类型 FindAncestor），与宿主/SystemTools 一致 -->
     </PropertyGroup>
 
     <PropertyGroup>
@@ -16,11 +15,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="12.1.1" />
+        <!--
+          关键：所有宿主已提供的程序集（ClassIsland.Core / FluentAvalonia / Avalonia / DataGrid）
+          必须用 ExcludeAssets=runtime; native 排除，确保插件目录不复制这些 DLL、deps.json
+          不列出它们——插件 ALC 全部回落宿主 Default ALC。
+          否则：1) 插件加载自己的 ClassIsland.Core 副本导致 Plugin 入口类型身份不一致而被跳过；
+               2) 插件自带 Avalonia 与宿主并存（双类型身份）会让 JIT 编译 XAML populate 时
+                  MissingFieldException: FANumberBox.ValueProperty。
+        -->
+        <PackageReference Include="Avalonia" Version="12.1.1">
+            <ExcludeAssets>runtime; native</ExcludeAssets>
+        </PackageReference>
         <PackageReference Include="ClassIsland.PluginSdk" Version="2.1.1">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.0.0">
+            <ExcludeAssets>runtime; native</ExcludeAssets>
+        </PackageReference>
         <PackageReference Include="MiniExcel" Version="2.0.0-preview.4" />
     </ItemGroup>
 
